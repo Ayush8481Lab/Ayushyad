@@ -87,47 +87,20 @@ object-fit:cover;
 </a>
 
 </div>
-
 <script>
-
-/* load token then load video */
 
 async function loadVideo(){
 
-try{
-
 const tokenData = await fetch("/api/token").then(r=>r.json());
 
-const videoURL = `/api/video?token=${tokenData.token}&expire=${tokenData.expire}`;
+const video = await fetch(`/api/video?token=${tokenData.token}&expire=${tokenData.expire}`)
+.then(r=>r.json());
 
-document.getElementById("player").src = videoURL;
-
-}
-catch(e){
-
-document.body.innerHTML="<h2 style='color:white;text-align:center'>Video failed to load</h2>";
-
-}
+document.getElementById("player").src = video.embed;
 
 }
 
 loadVideo();
-
-/* disable right click */
-
-document.addEventListener("contextmenu",e=>e.preventDefault());
-
-/* block inspect shortcuts */
-
-document.addEventListener("keydown",function(e){
-
-if(e.key==="F12") e.preventDefault();
-
-if(e.ctrlKey && e.shiftKey && e.key==="I") e.preventDefault();
-
-if(e.ctrlKey && e.key==="U") e.preventDefault();
-
-});
 
 </script>
 
