@@ -1,20 +1,23 @@
 import crypto from "crypto";
 
-export default function handler(req, res) {
+export default function handler(req,res){
 
 const ref = req.headers.referer || "";
 
-if (!ref.includes(process.env.SITE)) {
+if(!ref.includes("ayushyad.vercel.app")){
 return res.status(403).send("Forbidden");
 }
 
-const expire = Math.floor(Date.now()/1000) + 600;
+const expire = Math.floor(Date.now()/1000)+600;
 
 const token = crypto
-.createHmac("sha256", process.env.SECRET_KEY)
+.createHmac("sha256",process.env.SECRET_KEY)
 .update(String(expire))
 .digest("hex");
 
-res.json({ token, expire });
+res.json({
+token,
+expire
+});
 
 }
