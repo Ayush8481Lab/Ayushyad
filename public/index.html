@@ -89,20 +89,9 @@ object-fit:cover;
 </div>
 <script>
 
-async function loadVideo(){
-
-const t = await fetch("/api/token").then(r=>r.json());
-
-const url = `/api/video?token=${t.token}&expire=${t.expire}`;
-
-document.getElementById("player").src = url;
-
-}
-
-loadVideo();
+document.getElementById("player").src="/api/video";
 
 </script>
-
 
 
 </body>
