@@ -3,8 +3,9 @@ import crypto from "crypto";
 export default function handler(req,res){
 
 const ref = req.headers.referer || "";
+const origin = req.headers.origin || "";
 
-if(!ref.includes("ayushyad.vercel.app")){
+if(!ref.includes("ayushyad.vercel.app") && !origin.includes("ayushyad.vercel.app")){
 return res.status(403).send("Forbidden");
 }
 
