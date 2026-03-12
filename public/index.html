@@ -93,7 +93,7 @@ async function loadVideo(){
 
 const t = await fetch("/api/token").then(r=>r.json());
 
-const url = `/api/stream?token=${t.token}&expire=${t.expire}`;
+const url = `/api/video?token=${t.token}&expire=${t.expire}`;
 
 document.getElementById("player").src = url;
 
