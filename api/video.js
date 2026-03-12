@@ -2,33 +2,33 @@ import crypto from "crypto";
 
 export default function handler(req, res) {
 
-const { token, expire } = req.query;
+const ref = req.headers.referer || "";
 
-const secret = process.env.SECRET_KEY;
-
-if(!token || !expire){
-return res.status(403).send("Forbidden");
+if (!ref.includes(process.env.SITE)) {
+return res.status(403).send("Blocked");
 }
 
-if(expire < Math.floor(Date.now()/1000)){
-return res.status(403).send("Token expired");
+const { token, expire } = req.query;
+
+if (!token || !expire) {
+return res.status(403).send("Invalid");
+}
+
+if (expire < Math.floor(Date.now()/1000)) {
+return res.status(403).send("Expired");
 }
 
 const valid = crypto
-.createHmac("sha256", secret)
+.createHmac("sha256", process.env.SECRET_KEY)
 .update(String(expire))
 .digest("hex");
 
-if(token !== valid){
-return res.status(403).send("Invalid token");
+if (token !== valid) {
+return res.status(403).send("Bad token");
 }
 
-const id = process.env.DRIVE_ID;
+const url = `https://drive.google.com/file/d/${process.env.DRIVE_ID}/preview`;
 
-const url = `https://drive.google.com/file/d/${id}/preview`;
-
-res.json({
-embed:url
-});
+res.redirect(url);
 
 }
